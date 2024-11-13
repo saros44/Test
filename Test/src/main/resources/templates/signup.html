@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+</head>
+<body>
+<h2>Signup</h2>
+
+<!-- Signup Form with Thymeleaf -->
+<form th:action="@{/signup}" method="post" id="signupForm">
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required th:value="${username}"><br><br>
+    </div>
+
+    <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required th:value="${email}"><br><br>
+    </div>
+
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+    </div>
+
+    <div>
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" min="18" required th:value="${age}"><br><br>
+    </div>
+
+    <div>
+        <label for="sex">Sex:</label>
+        <select id="sex" name="sex" required th:value="${sex}">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+        </select><br><br>
+    </div>
+
+    <button type="submit">Signup</button>
+</form>
+
+<p>Already have an account? <a href="/login">Login here</a></p>
+
+<!-- JavaScript for validation (Optional) -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('signupForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const age = document.getElementById('age').value.trim();
+            const sex = document.getElementById('sex').value.trim();
+
+            // Send AJAX request
+            fetch('/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `email=${encodeURIComponent(email)}&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}&age=${encodeURIComponent(age)}&sex=${encodeURIComponent(sex)}`
+            })
+                .then(response => response.json()) // Attempt to parse JSON
+                .then(data => {
+                    if (data.status === "success") {
+                        alert(data.message); // Show success message
+                        window.location.href = "/login";
+                    } else {
+                        alert(data.message); // Show error message
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred during signup.');
+                });
+        });
+    });
+
+</script>
+
+</body>
+</html>

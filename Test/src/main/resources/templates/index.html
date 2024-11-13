@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index Page</title>
+</head>
+<body>
+<h1>Welcome to Our Application</h1>
+
+
+
+<!-- Logout Button -->
+<button id="logoutBtn">Logout</button>
+
+<script>
+    document.getElementById('logoutBtn').addEventListener('click', function () {
+        // Send a GET request to the logout endpoint
+        fetch('/logout', {
+            method: 'POST', // You can also use GET here, depending on your backend
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    // Redirect to login page after logout
+                    window.location.href = '/login';  // Redirect user to login page after logout
+                } else {
+                    alert('Logout failed, please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Logout Error:', error);
+                alert('An error occurred during logout. Please try again later.');
+            });
+    });
+</script>
+
+</body>
+</html>
